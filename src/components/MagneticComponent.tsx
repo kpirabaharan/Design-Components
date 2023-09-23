@@ -3,15 +3,21 @@
 import { useRef, useState, PropsWithChildren, MouseEvent } from 'react';
 import { motion } from 'framer-motion';
 
+/**
+ * @param {modifier}      modifier     How much the magnetic component moves in the x and y directions. Higher Values = Travels Further
+ * @param {className}     className    CSS passed to the main wrapper div
+ * @param {className}     children     Child Component to be magnetically moved
+ */
+
 interface MagneticComponentProps extends PropsWithChildren {
-  className?: string;
   modifier?: { x: number; y: number };
+  className?: string;
 }
 
 const MagneticComponent = ({
-  children,
-  className,
   modifier = { x: 1, y: 1 },
+  className,
+  children,
 }: MagneticComponentProps) => {
   const ref = useRef<HTMLDivElement>(null!);
   const [position, setPosition] = useState({ x: 0, y: 0 });
