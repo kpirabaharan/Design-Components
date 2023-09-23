@@ -1,6 +1,4 @@
-# Library
-
-## Magnetic Component
+# Magnetic Component
 
 Created a magnetic wrapper component that attaches to the cursor while user is near it.
 
