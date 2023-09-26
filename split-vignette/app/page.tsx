@@ -1,6 +1,6 @@
 'use client';
 
-import { MouseEvent, useState, useEffect } from 'react';
+import { MouseEvent, useEffect } from 'react';
 import Lenis from '@studio-freight/lenis';
 
 import SplitVignette from '@/components/SplitVignette';
