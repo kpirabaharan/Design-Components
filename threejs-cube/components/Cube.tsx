@@ -1,10 +1,35 @@
 'use client';
 
 import { useRef } from 'react';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { TextureLoader, Mesh } from 'three';
+import { useMotionValue, useSpring } from 'framer-motion';
+import { motion } from 'framer-motion-3d';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Mesh } from 'three';
 
 import { flower } from '@/assets';
+import { OrbitControls, useTexture, useVideoTexture } from '@react-three/drei';
+
+const VideoMaterial = ({ url, side }: { url: string; side: number }) => {
+  const texture = useVideoTexture(url);
+  return (
+    <meshStandardMaterial
+      map={texture}
+      attach={`material-${side}`}
+      toneMapped={true}
+    />
+  );
+};
+
+const ImageMaterial = ({ url, side }: { url: string; side: number }) => {
+  const texture = useTexture(url);
+  return (
+    <meshStandardMaterial
+      map={texture}
+      attach={`material-${side}`}
+      toneMapped={true}
+    />
+  );
+};
 
 const Box = () => {
   const mesh = useRef<Mesh>(null!);
@@ -15,22 +40,15 @@ const Box = () => {
     mesh.current.rotation.z += delta * 0.15;
   });
 
-  const texture_1 = useLoader(TextureLoader, flower.src);
-  const texture_2 = useLoader(TextureLoader, flower.src);
-  const texture_3 = useLoader(TextureLoader, flower.src);
-  const texture_4 = useLoader(TextureLoader, flower.src);
-  const texture_5 = useLoader(TextureLoader, flower.src);
-  const texture_6 = useLoader(TextureLoader, flower.src);
-
   return (
     <mesh ref={mesh}>
-      <boxGeometry args={[2.5, 2.5, 2.5]} />
-      <meshStandardMaterial map={texture_1} attach={'material-0'} />
-      <meshStandardMaterial map={texture_2} attach={'material-1'} />
-      <meshStandardMaterial map={texture_3} attach={'material-2'} />
-      <meshStandardMaterial map={texture_4} attach={'material-3'} />
-      <meshStandardMaterial map={texture_5} attach={'material-4'} />
-      <meshStandardMaterial map={texture_6} attach={'material-5'} />
+      <boxGeometry args={[10, 10, 10]} />
+      <VideoMaterial url={'Oppenheimer.mp4'} side={0} />
+      <VideoMaterial url={'Oppenheimer.mp4'} side={1} />
+      <ImageMaterial url={flower.src} side={2} />
+      <ImageMaterial url={flower.src} side={3} />
+      <VideoMaterial url={'Oppenheimer.mp4'} side={4} />
+      <ImageMaterial url={flower.src} side={5} />
     </mesh>
   );
 };
@@ -39,7 +57,8 @@ const Cube = () => {
   return (
     <main className='h-[500vh]'>
       <div className='sticky top-0 h-screen'>
-        <Canvas>
+        <Canvas camera={{ position: [0, 2, 50], fov: 30 }}>
+          <OrbitControls enableZoom={false} enablePan={false} />
           <ambientLight intensity={2} />
           <directionalLight position={[2, 1, 1]} />
           <Box />
