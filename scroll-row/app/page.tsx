@@ -93,7 +93,7 @@ export default function Home() {
     <div className='flex h-screen bg-white items-center'>
       <div className='h-[300px] w-full'>
         <Canvas>
-          <directionalLight position={[0, 0, 10]} intensity={1} />
+          <directionalLight position={[0, 10, 15]} intensity={1} />
           <PerspectiveCamera makeDefault>
             <RowOfBalls />
           </PerspectiveCamera>
