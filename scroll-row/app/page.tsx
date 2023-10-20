@@ -1,15 +1,8 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import {
-  Decal,
-  Html,
-  OrbitControls,
-  PerspectiveCamera,
-  Preload,
-  useTexture,
-} from '@react-three/drei';
+import { Decal, OrbitControls, Preload, useTexture } from '@react-three/drei';
 
 import { tech } from '@/constants';
 import { StaticImageData } from 'next/image';
@@ -38,11 +31,11 @@ const Ball = ({ total, index, item }: BallProps) => {
       ref={ref}
       castShadow
       receiveShadow
-      scale={1}
+      scale={2}
       position={[
-        Math.sin(((360 / total) * index * Math.PI) / 180) * 15,
+        Math.sin(((360 / total) * index * Math.PI) / 180) * 23,
         0,
-        Math.cos(((360 / total) * index * Math.PI) / 180) * 15,
+        Math.cos(((360 / total) * index * Math.PI) / 180) * 23,
       ]}
     >
       <icosahedronGeometry args={[1, 6]} />
@@ -74,7 +67,7 @@ const RowOfBalls = () => {
   });
 
   return (
-    <group ref={ref} position={[0, 0, -20]}>
+    <group ref={ref} position={[0, 0, -25]}>
       {tech.map((item, index) => (
         <Ball key={index} item={item} total={tech.length} index={index} />
       ))}
@@ -84,17 +77,16 @@ const RowOfBalls = () => {
 
 export default function Home() {
   return (
-    <div className='flex h-screen bg-white'>
-      <Canvas>
-        {/* <ambientLight intensity={0.25} /> */}
-        <directionalLight position={[0, 0, 15]} intensity={1} />
-        <RowOfBalls />
-        <OrbitControls
-        // enableZoom={false}
-        // enablePan={false}
-        // enableRotate={false}
-        />
-      </Canvas>
+    <div className='flex h-screen bg-white items-center'>
+      <div className='h-[300px] w-full'>
+        <Canvas>
+          {/* <ambientLight intensity={0.25} /> */}
+          <directionalLight position={[0, 0, 10]} intensity={1} />
+          <RowOfBalls />
+          <OrbitControls />
+          <Preload all />
+        </Canvas>
+      </div>
     </div>
   );
 }
