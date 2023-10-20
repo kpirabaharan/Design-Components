@@ -31,7 +31,7 @@ const Ball = ({ total, index, item }: BallProps) => {
 
   useFrame(({ clock }) => {
     if (ref.current) {
-      ref.current.rotation.y = clock.getElapsedTime() * 0.5 * -1;
+      ref.current.position.setX(clock.getElapsedTime() * 0.1);
     }
   });
 
@@ -67,24 +67,12 @@ const Ball = ({ total, index, item }: BallProps) => {
 };
 
 const RowOfBalls = () => {
-  const groupRef = useRef<THREE.Group>(null!);
-  const textRef = useRef<THREE.Group>(null!);
-
-  useFrame(({ clock }) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = clock.getElapsedTime() * 0.5;
-    }
-    if (textRef.current) {
-      textRef.current.rotation.y = clock.getElapsedTime() * 0.5 * -1;
-    }
-  });
-
   return (
-    <group ref={groupRef} position={[0, 0, -25]}>
+    <group position={[0, 0, -25]}>
       {tech.map((item, index) => (
         <Ball key={index} item={item} total={tech.length} index={index} />
       ))}
-      <Center ref={textRef}>
+      <Center>
         <Text3D font={'/Inter_Bold.json'} size={5}>
           FrontEnd
           <meshNormalMaterial />
