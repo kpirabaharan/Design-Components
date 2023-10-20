@@ -2,7 +2,16 @@
 
 import { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Decal, OrbitControls, Preload, useTexture } from '@react-three/drei';
+import {
+  Decal,
+  OrbitControls,
+  Preload,
+  useTexture,
+  Text,
+  RenderTexture,
+  Text3D,
+  Center,
+} from '@react-three/drei';
 
 import { tech } from '@/constants';
 import { StaticImageData } from 'next/image';
@@ -58,19 +67,29 @@ const Ball = ({ total, index, item }: BallProps) => {
 };
 
 const RowOfBalls = () => {
-  const ref = useRef<THREE.Group>(null!);
+  const groupRef = useRef<THREE.Group>(null!);
+  const textRef = useRef<THREE.Group>(null!);
 
   useFrame(({ clock }) => {
-    if (ref.current) {
-      ref.current.rotation.y = clock.getElapsedTime() * 0.5;
+    if (groupRef.current) {
+      groupRef.current.rotation.y = clock.getElapsedTime() * 0.5;
+    }
+    if (textRef.current) {
+      textRef.current.rotation.y = clock.getElapsedTime() * 0.5 * -1;
     }
   });
 
   return (
-    <group ref={ref} position={[0, 0, -25]}>
+    <group ref={groupRef} position={[0, 0, -25]}>
       {tech.map((item, index) => (
         <Ball key={index} item={item} total={tech.length} index={index} />
       ))}
+      <Center ref={textRef}>
+        <Text3D font={'/Inter_Bold.json'} size={5}>
+          FrontEnd
+          <meshNormalMaterial />
+        </Text3D>
+      </Center>
     </group>
   );
 };
