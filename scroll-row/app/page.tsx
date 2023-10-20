@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import {
   Decal,
+  Html,
   OrbitControls,
   PerspectiveCamera,
   Preload,
@@ -14,60 +15,68 @@ import { tech } from '@/constants';
 import { StaticImageData } from 'next/image';
 
 interface BallProps {
+  total: number;
+  index: number;
   item: {
     name: string;
     icon: StaticImageData;
   };
 }
 
-const Ball = ({ item }: BallProps) => {
+const Ball = ({ total, index, item }: BallProps) => {
   const decal = useTexture(item.icon.src);
   const ref = useRef<THREE.Mesh>(null!);
 
   useFrame(({ clock }) => {
     if (ref.current) {
-      ref.current.rotation.y = Math.tan(clock.getElapsedTime() * 0.5) / 20;
+      ref.current.rotation.y = clock.getElapsedTime() * 0.5 * -1;
     }
   });
 
   return (
-    <mesh ref={ref} castShadow receiveShadow scale={1}>
+    <mesh
+      ref={ref}
+      castShadow
+      receiveShadow
+      scale={1}
+      position={[
+        Math.sin(((360 / total) * index * Math.PI) / 180) * 15,
+        0,
+        Math.cos(((360 / total) * index * Math.PI) / 180) * 15,
+      ]}
+    >
       <icosahedronGeometry args={[1, 6]} />
-      <meshStandardMaterial
-        color='white'
-        polygonOffset
-        polygonOffsetFactor={-5}
-        flatShading
-      />
+      <meshStandardMaterial color='white' flatShading />
       <Decal
         debug
         position={[0, 0, 0.5]}
         rotation={[2 * Math.PI, 0, 6.25]}
         scale={1.5}
-        map={decal}
-      />
+      >
+        <meshBasicMaterial
+          transparent
+          polygonOffset
+          polygonOffsetFactor={-10}
+          map={decal}
+        />
+      </Decal>
     </mesh>
   );
 };
 
 const RowOfBalls = () => {
-  const [hovered, setHovered] = useState<number | null>(null);
+  const ref = useRef<THREE.Group>(null!);
+
+  useFrame(({ clock }) => {
+    if (ref.current) {
+      ref.current.rotation.y = clock.getElapsedTime() * 0.5;
+    }
+  });
 
   return (
-    <group position={[0, 0, -20]}>
+    <group ref={ref} position={[0, 0, -20]}>
       {tech.map((item, index) => (
-        <mesh
-          key={index}
-          position={[
-            Math.sin(((360 / tech.length) * index * Math.PI) / 180) * 20,
-            0,
-            Math.cos(((360 / tech.length) * index * Math.PI) / 180) * 20,
-          ]}
-          onPointerOver={() => setHovered(index)}
-          onPointerOut={() => setHovered(null)}
-        >
-          <Ball item={item} />
-        </mesh>
+        <Ball key={index} item={item} total={tech.length} index={index} />
       ))}
     </group>
   );
