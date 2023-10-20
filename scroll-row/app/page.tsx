@@ -11,6 +11,7 @@ import {
   RenderTexture,
   Text3D,
   Center,
+  PerspectiveCamera,
 } from '@react-three/drei';
 
 import { tech } from '@/constants';
@@ -31,26 +32,31 @@ const Ball = ({ total, index, item }: BallProps) => {
 
   useFrame(({ clock }) => {
     if (ref.current) {
-      ref.current.position.setX(clock.getElapsedTime() * 0.1);
+      ref.current.position.setX(
+        Math.sin(
+          clock.getElapsedTime() * 0.5 +
+            ((360 / total) * index * Math.PI) / 180,
+        ) * 30,
+      );
+      ref.current.position.setZ(
+        Math.cos(
+          clock.getElapsedTime() * 0.5 +
+            ((360 / total) * index * Math.PI) / 180,
+        ) * 15,
+      );
+      // ref.current.rotation.set(
+      //   0,
+      //   Math.sin(clock.getElapsedTime() * 0.5) * 0.2,
+      //   0,
+      // );
     }
   });
 
   return (
-    <mesh
-      ref={ref}
-      castShadow
-      receiveShadow
-      scale={2}
-      position={[
-        Math.sin(((360 / total) * index * Math.PI) / 180) * 23,
-        0,
-        Math.cos(((360 / total) * index * Math.PI) / 180) * 23,
-      ]}
-    >
+    <mesh ref={ref} castShadow receiveShadow scale={[2.2, 2, 2]}>
       <icosahedronGeometry args={[1, 6]} />
       <meshStandardMaterial color='white' flatShading />
       <Decal
-        debug
         position={[0, 0, 0.5]}
         rotation={[2 * Math.PI, 0, 6.25]}
         scale={1.5}
@@ -68,7 +74,7 @@ const Ball = ({ total, index, item }: BallProps) => {
 
 const RowOfBalls = () => {
   return (
-    <group position={[0, 0, -25]}>
+    <group position={[0, 0, -27]}>
       {tech.map((item, index) => (
         <Ball key={index} item={item} total={tech.length} index={index} />
       ))}
@@ -87,9 +93,10 @@ export default function Home() {
     <div className='flex h-screen bg-white items-center'>
       <div className='h-[300px] w-full'>
         <Canvas>
-          {/* <ambientLight intensity={0.25} /> */}
           <directionalLight position={[0, 0, 10]} intensity={1} />
-          <RowOfBalls />
+          <PerspectiveCamera makeDefault>
+            <RowOfBalls />
+          </PerspectiveCamera>
           <OrbitControls />
           <Preload all />
         </Canvas>
