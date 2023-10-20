@@ -30,26 +30,31 @@ const Ball = ({ total, index, item }: BallProps) => {
 
   useFrame(({ clock }) => {
     if (ref.current) {
-      ref.current.rotation.y = clock.getElapsedTime() * 0.5 * -1;
+      ref.current.position.setX(
+        Math.sin(
+          clock.getElapsedTime() * 0.5 +
+            ((360 / total) * index * Math.PI) / 180,
+        ) * 30,
+      );
+      ref.current.position.setZ(
+        Math.cos(
+          clock.getElapsedTime() * 0.5 +
+            ((360 / total) * index * Math.PI) / 180,
+        ) * 15,
+      );
+      // ref.current.rotation.set(
+      //   0,
+      //   Math.sin(clock.getElapsedTime() * 0.5) * 0.2,
+      //   0,
+      // );
     }
   });
 
   return (
-    <mesh
-      ref={ref}
-      castShadow
-      receiveShadow
-      scale={2}
-      position={[
-        Math.sin(((360 / total) * index * Math.PI) / 180) * 23,
-        0,
-        Math.cos(((360 / total) * index * Math.PI) / 180) * 23,
-      ]}
-    >
+    <mesh ref={ref} castShadow receiveShadow scale={[2.2, 2, 2]}>
       <icosahedronGeometry args={[1, 6]} />
       <meshStandardMaterial color='white' flatShading />
       <Decal
-        debug
         position={[0, 0, 0.5]}
         rotation={[2 * Math.PI, 0, 6.25]}
         scale={1.5}
@@ -66,24 +71,12 @@ const Ball = ({ total, index, item }: BallProps) => {
 };
 
 const RowOfBalls = () => {
-  const groupRef = useRef<THREE.Group>(null!);
-  const textRef = useRef<THREE.Group>(null!);
-
-  useFrame(({ clock }) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = clock.getElapsedTime() * 0.5;
-    }
-    if (textRef.current) {
-      textRef.current.rotation.y = clock.getElapsedTime() * 0.5 * -1;
-    }
-  });
-
   return (
-    <group ref={groupRef} position={[0, 0, -32]}>
+    <group position={[0, 0, -25]}>
       {tech.map((item, index) => (
         <Ball key={index} item={item} total={tech.length} index={index} />
       ))}
-      <Center ref={textRef}>
+      <Center>
         <Text3D font={'/Inter_Bold.json'} size={5}>
           FrontEnd
           <meshNormalMaterial />
@@ -98,8 +91,7 @@ export default function Home() {
     <div className='flex h-screen bg-white items-center'>
       <div className='h-[300px] w-full'>
         <Canvas>
-          {/* <ambientLight intensity={0.25} /> */}
-          <directionalLight position={[0, 0, 10]} intensity={1} />
+          <directionalLight position={[0, 10, 15]} intensity={1} />
           <PerspectiveCamera makeDefault>
             <RowOfBalls />
           </PerspectiveCamera>
