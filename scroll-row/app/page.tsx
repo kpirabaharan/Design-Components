@@ -7,10 +7,9 @@ import {
   OrbitControls,
   Preload,
   useTexture,
-  Text,
-  RenderTexture,
   Text3D,
   Center,
+  PerspectiveCamera,
 } from '@react-three/drei';
 
 import { tech } from '@/constants';
@@ -80,7 +79,7 @@ const RowOfBalls = () => {
   });
 
   return (
-    <group ref={groupRef} position={[0, 0, -25]}>
+    <group ref={groupRef} position={[0, 0, -32]}>
       {tech.map((item, index) => (
         <Ball key={index} item={item} total={tech.length} index={index} />
       ))}
@@ -101,7 +100,9 @@ export default function Home() {
         <Canvas>
           {/* <ambientLight intensity={0.25} /> */}
           <directionalLight position={[0, 0, 10]} intensity={1} />
-          <RowOfBalls />
+          <PerspectiveCamera makeDefault>
+            <RowOfBalls />
+          </PerspectiveCamera>
           <OrbitControls />
           <Preload all />
         </Canvas>
