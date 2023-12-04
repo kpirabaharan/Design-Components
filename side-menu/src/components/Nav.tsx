@@ -13,7 +13,14 @@ const Nav = ({ isActive }: NavProps) => {
     { title: 'Blog', href: '/' },
   ];
 
-  const variants: Variants = {
+  const FooterLinks = [
+    { title: 'Twitter', href: '/' },
+    { title: 'GitHub', href: '/' },
+    { title: 'LinkedIn', href: '/' },
+    { title: 'Facebook', href: '/' },
+  ];
+
+  const navVariants: Variants = {
     initial: {
       opacity: 0,
       rotateX: 90,
@@ -38,14 +45,34 @@ const Nav = ({ isActive }: NavProps) => {
     },
   };
 
+  const footerVariants: Variants = {
+    initial: {
+      opacity: 0,
+      y: 20,
+    },
+    enter: (index: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        delay: 1 + index * 0.1,
+        ease: [0.215, 0.61, 0.355, 1],
+      },
+    }),
+    exit: {
+      opacity: 0,
+      transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] },
+    },
+  };
+
   return (
-    <nav className='box-border h-full px-[40px] pb-[50px] pt-[110px]'>
+    <nav className='box-border flex h-full flex-col justify-between px-[40px] pb-[50px] pt-[110px]'>
       <div className='flex flex-col gap-y-6'>
         {Links.map((link, index) => (
           <div className='perspective-1 perspective-origin-bottom' key={index}>
             <motion.div
               custom={index}
-              variants={variants}
+              variants={navVariants}
               initial={'initial'}
               animate={'enter'}
               exit={'exit'}
@@ -55,6 +82,21 @@ const Nav = ({ isActive }: NavProps) => {
               </a>
             </motion.div>
           </div>
+        ))}
+      </div>
+      <div className='grid grid-cols-2'>
+        {FooterLinks.map((link, index) => (
+          <motion.a
+            key={index}
+            href={link.href}
+            custom={index}
+            variants={footerVariants}
+            initial={'initial'}
+            animate={'enter'}
+            exit={'exit'}
+          >
+            {link.title}
+          </motion.a>
         ))}
       </div>
     </nav>
