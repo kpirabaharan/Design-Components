@@ -42,11 +42,6 @@ const Ball = ({ total, index, item }: BallProps) => {
             ((360 / total) * index * Math.PI) / 180,
         ) * 15,
       );
-      // ref.current.rotation.set(
-      //   0,
-      //   Math.sin(clock.getElapsedTime() * 0.5) * 0.2,
-      //   0,
-      // );
     }
   });
 

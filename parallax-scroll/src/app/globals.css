@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Regular';
+    src: url('../../public/fonts/YoungSerif-Regular.ttf');
+}
+
+body{
+    background-color: #CCCCCC;
+    margin: 0px;
+    font-family: 'Regular';
+    margin-top: 100vh;
+    margin-bottom: 100vh;
+}

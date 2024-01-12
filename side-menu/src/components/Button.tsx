@@ -1,13 +1,8 @@
-import React, { PropsWithChildren } from 'react';
 import { motion } from 'framer-motion';
 
 interface ButtonProps {
   isActive: boolean;
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-interface PerspectiveTextProps extends PropsWithChildren {
-  className?: string;
 }
 
 const Button = ({ isActive, setIsActive }: ButtonProps) => {
