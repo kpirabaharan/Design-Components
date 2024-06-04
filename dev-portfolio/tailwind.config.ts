@@ -26,6 +26,9 @@ const config = {
       },
     },
     extend: {
+      scale: {
+        '-1': '-1',
+      },
       colors: {
         black: {
           DEFAULT: '#000',

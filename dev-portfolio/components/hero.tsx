@@ -8,14 +8,22 @@ const Hero = () => {
     <div className='pb-20 pt-36'>
       <div>
         <Spotlight
-          className='-left-10 -top-40 h-screen md:-left-32 md:-top-20'
+          className='-top-40 left-0 md:-top-20 md:left-60'
           fill='white'
         />
         <Spotlight
+          className='-top-40 right-0 md:-top-20 md:right-60'
+          fill='white'
+        />
+        <Spotlight
+          className='-scale-y-1 -scale-x-1 -top-40 right-0 md:-top-20 md:right-60'
+          fill='white'
+        />
+        {/* <Spotlight
           className='left-full top-10 h-[80vh] w-[50vh]'
           fill='purple'
         />
-        <Spotlight className='left-80 top-28 h-[80vh] w-[50vh]' fill='blue' />
+        <Spotlight className='left-80 top-28 h-[80vh] w-[50vh]' fill='blue' /> */}
       </div>
       <div className='absolute left-0 top-0 flex h-screen w-full items-center justify-center bg-white bg-grid-black/[0.2] dark:bg-black-100 dark:bg-grid-white/[0.05]'>
         {/* Radial gradient for the container to give a faded look */}
